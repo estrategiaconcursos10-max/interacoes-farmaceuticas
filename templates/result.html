@@ -1,0 +1,49 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial; margin:20px; max-width:900px}
+    header{display:flex;align-items:center;justify-content:space-between}
+    .card{border:1px solid #ddd;padding:12px;margin:10px 0;border-radius:8px}
+    .ok{color:#065f46;font-weight:700}
+    .warn{color:#b45309;font-weight:700}
+    .bad{color:#b00020;font-weight:700}
+    a{color: #2a7ae2; text-decoration:none}
+    footer{margin-top:30px;color:#666;font-size:13px}
+    button{padding:8px 12px;border-radius:6px;border:none;background:#2a7ae2;color:white}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>{{ title }}</h1>
+    <a href="/">Nova consulta</a>
+  </header>
+  <main>
+    <h2>Consulta: {{ a }}  +  {{ b }}</h2>
+    <div class="card">
+      {% if result.status == 'error' %}
+        <div class="bad">Erro: {{ result.message }}</div>
+      {% elif result.status == 'not_found' %}
+        <div class="warn">Não encontrado: {{ result.message }}</div>
+      {% elif result.status == 'no_interaction' %}
+        <div class="ok">❌ Nenhuma interação conhecida encontrada.</div>
+        <p>{{ result.message }}</p>
+      {% elif result.status == 'interaction' %}
+        <div class="bad">✅ Existe interação — Severidade: {{ result.interaction.severity }}</div>
+        <h3>Explicação</h3>
+        {% for t in result.interaction.explanations %}
+          <p>{{ t }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
+    <div>
+      <button onclick="window.location.href='/'">Fazer outra consulta</button>
+    </div>
+  </main>
+  <footer>Protótipo gratuito — Interações Farmacêuticas</footer>
+</body>
+</html>
